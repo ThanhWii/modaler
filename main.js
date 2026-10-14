@@ -1,5 +1,13 @@
 class Modal {
-    open(content) {
+    open(options = {}) {
+        const { templatedId } = options;
+        const template = document.querySelector(`#${templatedId}`);
+        if (!template) {
+            console.error(`#${templatedId} does not exists.`);
+            return;
+        }
+
+        const content = template.content.cloneNode(true);
         const backdrop = document.createElement('div');
         backdrop.className = "modal-backdrop show";
 
@@ -11,10 +19,10 @@ class Modal {
         closeBtn.innerHTML = '&times;';
 
         const modalContent = document.createElement('div');
-        modalContent.className = "modal-modal";
+        modalContent.className = "modal-content";
 
         // Append content and elements
-        modalContent.innerHTML = content;
+        modalContent.append(content);
         container.append(closeBtn, modalContent);
         backdrop.append(container);
         document.body.append(backdrop);
@@ -47,4 +55,15 @@ class Modal {
 
 // TEST
 const modal1 = new Modal();
-modal1.open(`<h1>Hello world!</h1>`);
+document.querySelector('#open-modal-1').onclick = () => {
+    modal1.open({
+        templatedId: 'modal-1',
+    });
+}
+
+const modal2 = new Modal();
+document.querySelector('#open-modal-2').onclick = () => {
+    modal2.open({
+        templatedId: 'modal-2',
+    });
+}
