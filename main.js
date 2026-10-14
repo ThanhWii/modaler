@@ -1,6 +1,6 @@
 class Modal {
     open(options = {}) {
-        const { templatedId } = options;
+        const { templatedId, allowBackdropClose = true } = options;
         const template = document.querySelector(`#${templatedId}`);
         if (!template) {
             console.error(`#${templatedId} does not exists.`);
@@ -31,9 +31,11 @@ class Modal {
         closeBtn.onclick = () => {
             this.closeModal(backdrop);
         }
-        backdrop.onclick = (e) => {
-            if (e.target === e.currentTarget) {
-                this.closeModal(backdrop);
+        if (allowBackdropClose) {
+            backdrop.onclick = (e) => {
+                if (e.target === e.currentTarget) {
+                    this.closeModal(backdrop);
+                }
             }
         }
         document.addEventListener('keydown', (e) => {
@@ -67,6 +69,7 @@ const modal2 = new Modal();
 document.querySelector('#open-modal-2').onclick = () => {
     const modalElement = modal2.open({
         templatedId: 'modal-2',
+        allowBackdropClose: false,
     });
 
     const form = modalElement.querySelector('#login-form');
