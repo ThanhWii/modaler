@@ -44,6 +44,9 @@ class Modal {
             }
         });
 
+        // Disable scrolling
+        document.body.classList.add('no-scroll');
+
         return backdrop;
     }
 
@@ -54,6 +57,8 @@ class Modal {
                 modalElement.remove();
             }
         }
+        // Enable scrolling
+        document.body.classList.remove('no-scroll');
     }
 }
 
