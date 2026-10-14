@@ -41,6 +41,8 @@ class Modal {
                 this.closeModal(backdrop);
             }
         });
+
+        return backdrop;
     }
 
     closeModal(modalElement) {
@@ -63,7 +65,19 @@ document.querySelector('#open-modal-1').onclick = () => {
 
 const modal2 = new Modal();
 document.querySelector('#open-modal-2').onclick = () => {
-    modal2.open({
+    const modalElement = modal2.open({
         templatedId: 'modal-2',
     });
+
+    const form = modalElement.querySelector('#login-form');
+    if (form) {
+        form.onsubmit = (e) => {
+            e.preventDefault();
+            const formData = {
+                email: form.querySelector('#email').value.trim(),
+                password: form.querySelector('#password').value.trim(),
+            }
+            console.log(formData);
+        }
+    }
 }
