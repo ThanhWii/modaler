@@ -99,10 +99,7 @@ class Modal {
         });
 
         if (this.#allowButtonClose) {
-            const closeBtn = this.#createButtons('&times;', "modal-close", this.close);
-            closeBtn.onclick = () => {
-                this.close();
-            }
+            const closeBtn = this.#createButtons('&times;', "modal-close", () => this.close());
             container.append(closeBtn);
         }
         const modalContent = document.createElement('div');
