@@ -52,6 +52,9 @@ class Modaler {
 
     // Static private methods
     static #hasScrollbar(target) {
+        if ([document.documentElement, document.body].includes(target)) {
+            return document.documentElement.scrollHeight > document.documentElement.clientHeight || document.body.scrollHeight > document.body.clientHeight;
+        }
         return target.scrollHeight > target.clientHeight;
     }
 
@@ -111,7 +114,7 @@ class Modaler {
             contentNode.innerHTML = this.#content;
         }
         this.#backdrop = document.createElement('div');
-        this.#backdrop.className = "modaler__backdrop";
+        this.#backdrop.className = "modaler";
 
         const container = document.createElement('div');
         container.className = "modaler__container";
@@ -166,8 +169,6 @@ class Modaler {
         // Disable scrolling
         if (this.#opt.enableScrollLock) {
             const target = this.#opt.scrollLockTarget();
-            console.log(target);
-            console.log(Modaler.#hasScrollbar(target));
             if (Modaler.#hasScrollbar(target)) {
                 target.classList.add('modaler--no-scroll');
                 const targetPaddingRight = parseInt(getComputedStyle(target).paddingRight);
@@ -213,8 +214,8 @@ class Modaler {
         this.close(true);
     }
 
-    setFooterContent(html) {
-        this.#footerContent = html;
+    setFooterContent(content) {
+        this.#footerContent = content;
         this.#renderFooterContent();
     }
 

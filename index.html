@@ -12,7 +12,6 @@
 </head>
 
 <body>
-
     <!-- Header Banner -->
     <header class="header">
         <a href="https://github.com/ThanhWii/modaler" target="_blank" class="github-link" title="View on GitHub">
@@ -68,7 +67,8 @@
     <template id="tpl-basic">
         <div class="modal-body">
             <h3>Basic Modal</h3>
-            <p>This is the most basic modal. You can close it by clicking the <strong>&times;</strong> button in the top
+            <p>This is the most basic modal. You can close it by clicking the <strong>&times;</strong> button in the
+                top
                 corner, clicking outside the <strong>overlay</strong> area, or pressing the <strong>Escape
                     (Esc)</strong> key on your keyboard.</p>
         </div>
@@ -89,24 +89,36 @@
         <div class="modal-body">
             <h3>Large Content Modal (Scroll Lock)</h3>
             <p>When a modal is open, the underlying webpage has its scrolling disabled
-                (<code>.modaler--no-scroll</code>), with an automatic adjustment for the scrollbar width to prevent any
+                (<code>.modaler--no-scroll</code>), with an automatic adjustment for the scrollbar width to prevent
+                any
                 layout shift.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
+                et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                aliquip
                 ex ea commodo consequat.</p>
-            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                pariatur.
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+                est
                 laborum.</p>
-            <p>Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra,
-                est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod
+            <p>Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo
+                pharetra,
+                est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh
+                euismod
                 gravida.</p>
-            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum
-                tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas
+            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+                Vestibulum
+                tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam
+                egestas
                 semper.</p>
-            <p>Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper
+            <p>Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien
+                ullamcorper
                 pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
+                et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                aliquip
                 ex ea commodo consequat.</p>
         </div>
     </template>
@@ -115,7 +127,8 @@
     <template id="tpl-footer-only">
         <div class="modal-body">
             <h3>Footer-Only Close Modal</h3>
-            <p>This modal is configured with <code>closeMethods: []</code>. Users cannot close it by pressing the Esc
+            <p>This modal is configured with <code>closeMethods: []</code>. Users cannot close it by pressing the
+                Esc
                 key or clicking on the backdrop; instead, they must interact with the button located in the footer
                 below.</p>
         </div>
@@ -125,7 +138,8 @@
     <template id="tpl-persistent">
         <div class="modal-body">
             <h3>Persistent Modal (Stays in DOM)</h3>
-            <p>This modal has <code>destroyOnClose: false</code>. Try entering some content in the field below, close
+            <p>This modal has <code>destroyOnClose: false</code>. Try entering some content in the field below,
+                close
                 the modal,
                 and then open it again — your data remains preserved in the DOM!</p>
             <div class="form-group">
@@ -150,7 +164,8 @@
     <template id="tpl-multi-2">
         <div class="modal-body">
             <h3>Second Modal (Nested)</h3>
-            <p>This is the second modal, layered on top of the first one. Try pressing the <strong>Esc</strong> key to
+            <p>This is the second modal, layered on top of the first one. Try pressing the <strong>Esc</strong> key
+                to
                 verify!</p>
         </div>
     </template>
@@ -167,9 +182,9 @@
         </div>
     </template>
 
-    <!-- Nhung thu vien Modaler.js -->
+    <!-- Embed Modaler.js -->
     <script src="./src/modaler.js"></script>
-    <!-- Script khoi tao cac Modal Demo -->
+    <!-- Script to initialize Demo Modals -->
     <script>
         // 1. Basic Modal
         const basicModal = new Modaler({
@@ -242,15 +257,9 @@
         // 7. YouTube Embed Modal
         const youtubeModal = new Modaler({
             templateId: 'tpl-youtube',
-            destroyOnClose: true // Tu dong huy iframe de tat nhac khi dong modal
+            destroyOnClose: true // Automatically destroy the iframe to stop the music when closing the modal
         });
         document.querySelector('#btn-youtube').onclick = () => youtubeModal.open();
-    </script>
-    <script>
-        const modal10 = new Modaler({
-            // templateId: 'tpl-basic',
-            content: '<h2>Content Modal 1</h2>',
-        });
     </script>
 </body>
 
