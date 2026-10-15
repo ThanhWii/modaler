@@ -78,6 +78,12 @@ class Modal {
         })
     }
 
+    #renderFooterContent() {
+        if (this.#modalFooter && this.#footerContent) {
+            this.#modalFooter.innerHTML = this.#footerContent;
+        }
+    }
+
     #build() {
         const content = this.#template.content.cloneNode(true);
         this.#backdrop = document.createElement('div');
@@ -108,9 +114,7 @@ class Modal {
         if (this.#opt.footer) {
             this.#modalFooter = document.createElement('div');
             this.#modalFooter.className = 'modal-footer';
-            if (this.#footerContent) {
-                this.#modalFooter.innerHTML = this.#footerContent;
-            }
+            this.#renderFooterContent();
             this.#renderFooterButtons();
             container.append(this.#modalFooter);
         }
@@ -180,9 +184,7 @@ class Modal {
 
     setFooterContent(html) {
         this.#footerContent = html;
-        if (this.#modalFooter) {
-            this.#modalFooter.innerHTML = html;
-        }
+        this.#renderFooterContent();
     }
 
     addFooterButton(title, cssClass, callback) {
@@ -250,7 +252,7 @@ const modal3 = new Modal({
 document.querySelector('#open-modal-3').onclick = () => {
     modal3.open();
 }
-// modal3.setFooterContent('<h2>Footer Content Modal 3</h2>');
+modal3.setFooterContent('<h2>Footer Content Modal 3</h2>');
 modal3.addFooterButton('<span>Danger</span>', 'modal-btn danger pull-left', (e) => {
     console.log(e);
     console.log('Danger clicked');
