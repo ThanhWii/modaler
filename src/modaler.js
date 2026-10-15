@@ -1,15 +1,32 @@
-class Modal {
+class Modaler {
     #opt;
     #allowBackdropClose;
     #allowButtonClose;
     #allowEscapeClose;
     #template;
+    #content;
+    #modalContent;
     #footerContent;
     #footerButtons = [];
     #backdrop;
     #modalFooter;
 
     constructor(options = {}) {
+        if (!options.content && !options.templateId) {
+            console.error(`You must provide one of 'content' or 'templateId'.`);
+            return;
+        }
+        if (options.content && options.templateId) {
+            options.templateId = null;
+            console.warn(`Both 'content' and 'templatedId are specified. 'content' will take precedence, and 'templateId' will be ignore.`);
+        }
+        if (options.templateId) {
+            this.#template = document.querySelector(`#${options.templateId}`);
+            if (!this.#template) {
+                console.error(`#${options.templateId} does not exists.`);
+                return;
+            }
+        }
         this.#opt = {
             templateId: null,
             closeMethods: ['button', 'overlay', 'escape'],
@@ -20,11 +37,8 @@ class Modal {
             onClose: () => { },
             ...options
         }
-        this.#template = document.querySelector(`#${this.#opt.templateId}`);
-        if (!this.#template) {
-            console.error(`#${this.#opt.templateId} does not exists.`);
-            return;
-        }
+
+        this.#content = this.#opt.content;
         this.#allowBackdropClose = this.#opt.closeMethods.includes('overlay');
         this.#allowButtonClose = this.#opt.closeMethods.includes('button');
         this.#allowEscapeClose = this.#opt.closeMethods.includes('escape');
@@ -36,7 +50,7 @@ class Modal {
 
     // Static private methods
     static #getScrollBarWidth() {
-        if (Modal.#scrollbarWidth !== undefined) return Modal.#scrollbarWidth;
+        if (Modaler.#scrollbarWidth !== undefined) return Modaler.#scrollbarWidth;
         const div = document.createElement('div');
         Object.assign(div.style, {
             overflow: 'scroll',
@@ -44,9 +58,9 @@ class Modal {
             top: '-999px',
         });
         document.body.appendChild(div);
-        Modal.#scrollbarWidth = div.offsetWidth - div.clientWidth;
+        Modaler.#scrollbarWidth = div.offsetWidth - div.clientWidth;
         document.body.removeChild(div);
-        return Modal.#scrollbarWidth;
+        return Modaler.#scrollbarWidth;
     }
 
     // Private methods
@@ -59,7 +73,7 @@ class Modal {
     }
 
     #handleEscapeKey = (e) => {
-        const lastModal = Modal.#modalElements[Modal.#modalElements.length - 1];
+        const lastModal = Modaler.#modalElements[Modaler.#modalElements.length - 1];
         if (e.key === 'Escape' && this === lastModal) {
             this.close();
         }
@@ -86,7 +100,10 @@ class Modal {
     }
 
     #build() {
-        const content = this.#template.content.cloneNode(true);
+        const contentNode = this.#content ? document.createElement('div') : this.#template.content.cloneNode(true);
+        if (this.#content) {
+            contentNode.innerHTML = this.#content;
+        }
         this.#backdrop = document.createElement('div');
         this.#backdrop.className = "modaler__backdrop";
 
@@ -102,12 +119,12 @@ class Modal {
             const closeBtn = this.#createButtons('&times;', "modaler__close", () => this.close());
             container.append(closeBtn);
         }
-        const modalContent = document.createElement('div');
-        modalContent.className = "modaler__content";
+        this.#modalContent = document.createElement('div');
+        this.#modalContent.className = "modaler__content";
 
         // Append content and elements
-        modalContent.append(content);
-        container.append(modalContent);
+        this.#modalContent.append(contentNode);
+        container.append(this.#modalContent);
         if (this.#opt.footer) {
             this.#modalFooter = document.createElement('div');
             this.#modalFooter.className = 'modaler__footer';
@@ -129,7 +146,7 @@ class Modal {
 
     // API
     open() {
-        Modal.#modalElements.push(this);
+        Modaler.#modalElements.push(this);
 
         if (!this.#backdrop) {
             this.#build();
@@ -142,7 +159,7 @@ class Modal {
         }
         // Disable scrolling
         document.body.classList.add('modaler--no-scroll');
-        document.body.style.paddingRight = Modal.#getScrollBarWidth() + 'px';
+        document.body.style.paddingRight = Modaler.#getScrollBarWidth() + 'px';
 
         this.#onTransitionEnd(this.#opt.onOpen);
 
@@ -150,7 +167,7 @@ class Modal {
     }
 
     close(destroy = this.#opt.destroyOnClose) {
-        Modal.#modalElements.pop();
+        Modaler.#modalElements.pop();
         this.#backdrop.classList.remove("modaler--show");
         this.#onTransitionEnd(() => {
             if (this.#backdrop && destroy) {
@@ -160,7 +177,7 @@ class Modal {
                 this.#footerContent = null;
             }
             // Enable scrolling
-            if (Modal.#modalElements.length === 0) {
+            if (Modaler.#modalElements.length === 0) {
                 document.body.classList.remove('modaler--no-scroll');
                 document.body.style.paddingRight = null;
             }
@@ -189,6 +206,13 @@ class Modal {
         this.#footerButtons.push(button);
         if (this.#modalFooter) {
             this.#renderFooterButtons();
+        }
+    }
+
+    setContent(content) {
+        this.#content = content;
+        if (this.#modalContent) {
+            this.#modalContent.innerHTML = this.#content;
         }
     }
 }

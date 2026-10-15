@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modaler.js - Lightweight Modal Library</title>
     <!-- Modaler library CSS -->
-    <link rel="stylesheet" href="./modaler.min.css">
+    <link rel="stylesheet" href="./src/modaler.css">
     <!-- Demo page CSS -->
     <link rel="stylesheet" href="./styles.css">
 </head>
@@ -168,11 +168,11 @@
     </template>
 
     <!-- Nhung thu vien Modaler.js -->
-    <script src="./modaler.min.js"></script>
+    <script src="./src/modaler.js"></script>
     <!-- Script khoi tao cac Modal Demo -->
     <script>
         // 1. Basic Modal
-        const basicModal = new Modal({
+        const basicModal = new Modaler({
             templateId: 'tpl-basic',
             onOpen: () => console.log('Basic Modal opened'),
             onClose: () => console.log('Basic Modal closed')
@@ -180,7 +180,7 @@
         document.querySelector('#btn-basic').onclick = () => basicModal.open();
 
         // 2. Modal with Buttons
-        const buttonsModal = new Modal({
+        const buttonsModal = new Modaler({
             templateId: 'tpl-buttons',
             footer: true
         });
@@ -198,7 +198,7 @@
         document.querySelector('#btn-buttons').onclick = () => buttonsModal.open();
 
         // 3. Large Content Modal
-        const largeModal = new Modal({
+        const largeModal = new Modaler({
             templateId: 'tpl-large',
             footer: true
         });
@@ -206,7 +206,7 @@
         document.querySelector('#btn-large').onclick = () => largeModal.open();
 
         // 4. Footer-Only Close Modal
-        const footerOnlyModal = new Modal({
+        const footerOnlyModal = new Modaler({
             templateId: 'tpl-footer-only',
             closeMethods: [],
             footer: true
@@ -217,18 +217,18 @@
         document.querySelector('#btn-footer-only').onclick = () => footerOnlyModal.open();
 
         // 5. Persistent Modal (Stays in DOM)
-        const persistentModal = new Modal({
+        const persistentModal = new Modaler({
             templateId: 'tpl-persistent',
             destroyOnClose: false
         });
         document.querySelector('#btn-persistent').onclick = () => persistentModal.open();
 
         // 6. Multiple Modals
-        const multiModal2 = new Modal({
+        const multiModal2 = new Modaler({
             templateId: 'tpl-multi-2'
         });
 
-        const multiModal1 = new Modal({
+        const multiModal1 = new Modaler({
             templateId: 'tpl-multi-1',
             onOpen: () => {
                 const openInnerBtn = document.querySelector('#btn-open-inner-modal');
@@ -240,11 +240,17 @@
         document.querySelector('#btn-multiple').onclick = () => multiModal1.open();
 
         // 7. YouTube Embed Modal
-        const youtubeModal = new Modal({
+        const youtubeModal = new Modaler({
             templateId: 'tpl-youtube',
             destroyOnClose: true // Tu dong huy iframe de tat nhac khi dong modal
         });
         document.querySelector('#btn-youtube').onclick = () => youtubeModal.open();
+    </script>
+    <script>
+        const modal10 = new Modaler({
+            // templateId: 'tpl-basic',
+            content: '<h2>Content Modal 1</h2>',
+        });
     </script>
 </body>
 
