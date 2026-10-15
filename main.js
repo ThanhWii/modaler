@@ -36,7 +36,7 @@ class Modal {
 
     // Static private methods
     static #getScrollBarWidth() {
-        if (Modal.#scrollbarWidth) return Modal.#scrollbarWidth;
+        if (Modal.#scrollbarWidth !== undefined) return Modal.#scrollbarWidth;
         const div = document.createElement('div');
         Object.assign(div.style, {
             overflow: 'scroll',
@@ -53,6 +53,7 @@ class Modal {
     #onTransitionEnd(callback) {
         this.#backdrop.ontransitionend = (e) => {
             if (e.propertyName !== 'transform') return;
+            this.#backdrop.ontransitionend = null;
             if (typeof callback === 'function') callback();
         }
     }
@@ -98,11 +99,7 @@ class Modal {
         });
 
         if (this.#allowButtonClose) {
-            const closeBtn = this.#createButtons('&times;', "modal-close", this.close);
-            closeBtn.onclick = () => {
-                console.log(this);
-                this.close();
-            }
+            const closeBtn = this.#createButtons('&times;', "modal-close", () => this.close());
             container.append(closeBtn);
         }
         const modalContent = document.createElement('div');
@@ -128,13 +125,6 @@ class Modal {
                 }
             }
         }
-        if (this.#allowEscapeClose) {
-            document.addEventListener('keydown', this.#handleEscapeKey);
-        }
-
-        // Disable scrolling
-        document.body.classList.add('no-scroll');
-        document.body.style.paddingRight = Modal.#getScrollBarWidth() + 'px';
     }
 
     // API
@@ -147,6 +137,12 @@ class Modal {
         setTimeout(() => {
             this.#backdrop.classList.add('show');
         }, 0)
+        if (this.#allowEscapeClose) {
+            document.addEventListener('keydown', this.#handleEscapeKey);
+        }
+        // Disable scrolling
+        document.body.classList.add('no-scroll');
+        document.body.style.paddingRight = Modal.#getScrollBarWidth() + 'px';
 
         this.#onTransitionEnd(this.#opt.onOpen);
 
