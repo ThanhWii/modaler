@@ -30,6 +30,9 @@ class Modal {
         this.#allowEscapeClose = this.#opt.closeMethods.includes('escape');
     }
 
+    // Static private properties
+    static #modalElements = [];
+
     // Static private methods
     static #getScrollBarWidth() {
         if (this.#getScrollBarWidth.value) return this.#getScrollBarWidth.value;
@@ -54,7 +57,8 @@ class Modal {
     }
 
     #handleEscapeKey = (e) => {
-        if (e.key === 'Escape') {
+        const lastModal = Modal.#modalElements[Modal.#modalElements.length - 1];
+        if (e.key === 'Escape' && this === lastModal) {
             this.close();
         }
     };
@@ -123,6 +127,8 @@ class Modal {
 
     // API
     open() {
+        Modal.#modalElements.push(this);
+
         if (!this.#backdrop) {
             this.#build();
         }
@@ -142,6 +148,7 @@ class Modal {
     }
 
     close(destroy = this.#opt.destroyOnClose) {
+        Modal.#modalElements.pop();
         this.#backdrop.classList.remove("show");
         this.#onTransitionEnd(() => {
             if (this.#backdrop && destroy) {
@@ -150,8 +157,10 @@ class Modal {
                 this.#footerContent = null;
             }
             // Enable scrolling
-            document.body.classList.remove('no-scroll');
-            document.body.style.paddingRight = '';
+            if (Modal.#modalElements.length === 0) {
+                document.body.classList.remove('no-scroll');
+                document.body.style.paddingRight = null;
+            }
             // Callback
             if (typeof this.#opt.onClose === 'function') {
                 this.#opt.onClose();
