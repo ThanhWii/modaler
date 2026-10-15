@@ -1,0 +1,256 @@
+/* Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    background-color: #fff;
+}
+
+/* Header Banner */
+.header {
+    position: relative;
+    background: linear-gradient(110deg, #0088cc 0%, #38b2ac 65%, #68d391 100%);
+    color: #fff;
+    text-align: center;
+    padding: 56px 20px;
+}
+
+.github-link {
+    position: absolute;
+    top: 20px;
+    right: 28px;
+    color: #fff;
+    opacity: 0.9;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.github-link:hover {
+    opacity: 1;
+    transform: scale(1.08);
+}
+
+.header__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.header__subtitle {
+    font-size: 1.05rem;
+    opacity: 0.92;
+}
+
+/* Main Layout */
+.container {
+    max-width: 780px;
+    margin: 50px auto 80px;
+    padding: 0 20px;
+}
+
+/* Section Heading (1. Try It Out) */
+.section__heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.section__number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 2px solid #1a9b8e;
+    border-radius: 50%;
+    color: #1a9b8e;
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.section__title {
+    flex: 1;
+    color: #1a9b8e;
+    font-size: 1.45rem;
+    font-weight: 700;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #1a9b8e;
+}
+
+.section__desc {
+    margin-bottom: 18px;
+    font-size: 0.98rem;
+}
+
+.section__desc a {
+    color: #1a9b8e;
+    text-decoration: underline;
+}
+
+.section__desc a:hover {
+    color: #13746a;
+}
+
+/* Feature Bullet List */
+.feature-list {
+    margin: 0 0 24px 28px;
+    font-size: 0.95rem;
+}
+
+.feature-list li {
+    margin-bottom: 6px;
+}
+
+/* Demo Buttons Grid */
+.demo-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.demo-btn {
+    background-color: #fff;
+    color: #1a8a7d;
+    border: 2px solid #239b8e;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.demo-btn:hover {
+    background-color: #239b8e;
+    color: #fff;
+}
+
+/* =================BO SUNG STYLE CHO NOI DUNG TRONG MODAL================= */
+
+/* Tinh chinh nut X (.modaler__close) cua thu vien de canh giua dau X va bo vien mac dinh */
+.modaler__close {
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding-bottom: 3px;
+}
+
+.modal-body {
+    padding: 10px 0 20px;
+}
+
+.modal-body h3 {
+    font-size: 1.35rem;
+    margin-bottom: 12px;
+    color: #222;
+}
+
+.modal-body p {
+    margin-bottom: 12px;
+    color: #555;
+    font-size: 0.96rem;
+}
+
+.modal-body code {
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.88rem;
+    color: #d63384;
+}
+
+/* Form Input trong Persistent Modal */
+.form-group {
+    margin-top: 14px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.form-input:focus {
+    border-color: #239b8e;
+}
+
+/* Khung Video YouTube Responsive 16:9 */
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Cac nut bam o Footer (.modal-btn) */
+.modal-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background-color: #f8fafc;
+    color: #334155;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.modal-btn:hover {
+    background-color: #e2e8f0;
+}
+
+.modal-btn.primary {
+    background-color: #239b8e;
+    border-color: #239b8e;
+    color: #fff;
+}
+
+.modal-btn.primary:hover {
+    background-color: #1b7a70;
+}
+
+.modal-btn.danger {
+    background-color: #ef4444;
+    border-color: #ef4444;
+    color: #fff;
+}
+
+.modal-btn.danger:hover {
+    background-color: #dc2626;
+}
+
+.pull-left {
+    margin-right: auto;
+}
