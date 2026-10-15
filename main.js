@@ -1,4 +1,18 @@
 class Modal {
+    static #getScrollBarWidth() {
+        if (this.#getScrollBarWidth.value) return this.#getScrollBarWidth.value;
+        const div = document.createElement('div');
+        Object.assign(div.style, {
+            overflow: 'scroll',
+            position: 'absolute',
+            top: '-999px',
+        });
+        document.body.appendChild(div);
+        this.#getScrollBarWidth.value = div.offsetWidth - div.clientWidth;
+        document.body.removeChild(div);
+        return this.#getScrollBarWidth.value;
+    }
+
     open(options = {}) {
         const { templatedId, allowBackdropClose = true } = options;
         const template = document.querySelector(`#${templatedId}`);
@@ -29,29 +43,29 @@ class Modal {
 
         // Attach event listeners
         closeBtn.onclick = () => {
-            this.closeModal(backdrop);
+            this.close(backdrop);
         }
         if (allowBackdropClose) {
             backdrop.onclick = (e) => {
                 if (e.target === e.currentTarget) {
-                    this.closeModal(backdrop);
+                    this.close(backdrop);
                 }
             }
         }
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                this.closeModal(backdrop);
+                this.close(backdrop);
             }
         });
 
         // Disable scrolling
         document.body.classList.add('no-scroll');
-        document.body.style.paddingRight = this._getScrollBarWidth() + 'px';
+        document.body.style.paddingRight = Modal.#getScrollBarWidth() + 'px';
 
         return backdrop;
     }
 
-    closeModal(modalElement) {
+    close(modalElement) {
         modalElement.classList.remove("show");
         modalElement.ontransitionend = (e) => {
             if (e.propertyName === 'transform') {
@@ -61,19 +75,6 @@ class Modal {
         // Enable scrolling
         document.body.classList.remove('no-scroll');
         document.body.style.paddingRight = '';
-    }
-
-    _getScrollBarWidth() {
-        const div = document.createElement('div');
-        Object.assign(div.style, {
-            overflow: 'scroll',
-            position: 'absolute',
-            top: '-999px',
-        });
-        document.body.appendChild(div);
-        const scrollbarWidth = div.offsetWidth - div.clientWidth;
-        document.body.removeChild(div);
-        return scrollbarWidth;
     }
 }
 
