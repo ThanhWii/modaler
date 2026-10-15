@@ -32,10 +32,11 @@ class Modal {
 
     // Static private properties
     static #modalElements = [];
+    static #scrollbarWidth;
 
     // Static private methods
     static #getScrollBarWidth() {
-        if (this.#getScrollBarWidth.value) return this.#getScrollBarWidth.value;
+        if (Modal.#scrollbarWidth) return Modal.#scrollbarWidth;
         const div = document.createElement('div');
         Object.assign(div.style, {
             overflow: 'scroll',
@@ -43,9 +44,9 @@ class Modal {
             top: '-999px',
         });
         document.body.appendChild(div);
-        this.#getScrollBarWidth.value = div.offsetWidth - div.clientWidth;
+        Modal.#scrollbarWidth = div.offsetWidth - div.clientWidth;
         document.body.removeChild(div);
-        return this.#getScrollBarWidth.value;
+        return Modal.#scrollbarWidth;
     }
 
     // Private methods
@@ -63,6 +64,26 @@ class Modal {
         }
     };
 
+    #createButtons(title, cssClass, callback) {
+        const button = document.createElement('button');
+        button.className = cssClass;
+        button.innerHTML = title;
+        button.onclick = callback;
+        return button;
+    }
+
+    #renderFooterButtons() {
+        this.#footerButtons.forEach((button) => {
+            this.#modalFooter.append(button);
+        })
+    }
+
+    #renderFooterContent() {
+        if (this.#modalFooter && this.#footerContent) {
+            this.#modalFooter.innerHTML = this.#footerContent;
+        }
+    }
+
     #build() {
         const content = this.#template.content.cloneNode(true);
         this.#backdrop = document.createElement('div');
@@ -76,39 +97,30 @@ class Modal {
             }
         });
 
-        const closeBtn = document.createElement('button');
-        closeBtn.className = "modal-close";
-        closeBtn.innerHTML = '&times;';
-
+        if (this.#allowButtonClose) {
+            const closeBtn = this.#createButtons('&times;', "modal-close", this.close);
+            closeBtn.onclick = () => {
+                console.log(this);
+                this.close();
+            }
+            container.append(closeBtn);
+        }
         const modalContent = document.createElement('div');
         modalContent.className = "modal-content";
 
         // Append content and elements
         modalContent.append(content);
-        if (this.#allowButtonClose) {
-            container.append(closeBtn);
-        }
         container.append(modalContent);
         if (this.#opt.footer) {
             this.#modalFooter = document.createElement('div');
             this.#modalFooter.className = 'modal-footer';
-            if (this.#footerContent) {
-                this.#modalFooter.innerHTML = this.#footerContent;
-            }
-            this.#footerButtons.forEach((button) => {
-                this.#modalFooter.append(button);
-            })
+            this.#renderFooterContent();
+            this.#renderFooterButtons();
             container.append(this.#modalFooter);
         }
         this.#backdrop.append(container);
         document.body.append(this.#backdrop);
         // Attach event listeners
-        if (this.#allowButtonClose) {
-            closeBtn.onclick = () => {
-                console.log(this);
-                this.close();
-            }
-        }
         if (this.#allowBackdropClose) {
             this.#backdrop.onclick = (e) => {
                 if (e.target === e.currentTarget) {
@@ -136,13 +148,7 @@ class Modal {
             this.#backdrop.classList.add('show');
         }, 0)
 
-
-        this.#onTransitionEnd(() => {
-            // Callback
-            if (typeof this.#opt.onOpen === 'function') {
-                this.#opt.onOpen();
-            }
-        });
+        this.#onTransitionEnd(this.#opt.onOpen);
 
         return this.#backdrop;
     }
@@ -178,17 +184,15 @@ class Modal {
 
     setFooterContent(html) {
         this.#footerContent = html;
-        if (this.#modalFooter) {
-            this.#modalFooter.innerHTML = html;
-        }
+        this.#renderFooterContent();
     }
 
     addFooterButton(title, cssClass, callback) {
-        const button = document.createElement('button');
-        button.className = cssClass;
-        button.innerHTML = title;
-        button.onclick = callback;
+        const button = this.#createButtons(title, cssClass, callback);
         this.#footerButtons.push(button);
+        if (this.#modalFooter) {
+            this.#renderFooterButtons();
+        }
     }
 }
 
@@ -248,7 +252,7 @@ const modal3 = new Modal({
 document.querySelector('#open-modal-3').onclick = () => {
     modal3.open();
 }
-// modal3.setFooterContent('<h2>Footer Content Modal 3</h2>');
+modal3.setFooterContent('<h2>Footer Content Modal 3</h2>');
 modal3.addFooterButton('<span>Danger</span>', 'modal-btn danger pull-left', (e) => {
     console.log(e);
     console.log('Danger clicked');
