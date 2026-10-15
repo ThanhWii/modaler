@@ -32,10 +32,11 @@ class Modal {
 
     // Static private properties
     static #modalElements = [];
+    static #scrollbarWidth;
 
     // Static private methods
     static #getScrollBarWidth() {
-        if (this.#getScrollBarWidth.value) return this.#getScrollBarWidth.value;
+        if (Modal.#scrollbarWidth) return Modal.#scrollbarWidth;
         const div = document.createElement('div');
         Object.assign(div.style, {
             overflow: 'scroll',
@@ -43,9 +44,9 @@ class Modal {
             top: '-999px',
         });
         document.body.appendChild(div);
-        this.#getScrollBarWidth.value = div.offsetWidth - div.clientWidth;
+        Modal.#scrollbarWidth = div.offsetWidth - div.clientWidth;
         document.body.removeChild(div);
-        return this.#getScrollBarWidth.value;
+        return Modal.#scrollbarWidth;
     }
 
     // Private methods
