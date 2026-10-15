@@ -36,7 +36,7 @@ class Modal {
 
     // Static private methods
     static #getScrollBarWidth() {
-        if (Modal.#scrollbarWidth) return Modal.#scrollbarWidth;
+        if (Modal.#scrollbarWidth !== undefined) return Modal.#scrollbarWidth;
         const div = document.createElement('div');
         Object.assign(div.style, {
             overflow: 'scroll',
@@ -100,7 +100,6 @@ class Modal {
         if (this.#allowButtonClose) {
             const closeBtn = this.#createButtons('&times;', "modal-close", this.close);
             closeBtn.onclick = () => {
-                console.log(this);
                 this.close();
             }
             container.append(closeBtn);
