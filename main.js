@@ -128,13 +128,6 @@ class Modal {
                 }
             }
         }
-        if (this.#allowEscapeClose) {
-            document.addEventListener('keydown', this.#handleEscapeKey);
-        }
-
-        // Disable scrolling
-        document.body.classList.add('no-scroll');
-        document.body.style.paddingRight = Modal.#getScrollBarWidth() + 'px';
     }
 
     // API
@@ -147,6 +140,12 @@ class Modal {
         setTimeout(() => {
             this.#backdrop.classList.add('show');
         }, 0)
+        if (this.#allowEscapeClose) {
+            document.addEventListener('keydown', this.#handleEscapeKey);
+        }
+        // Disable scrolling
+        document.body.classList.add('no-scroll');
+        document.body.style.paddingRight = Modal.#getScrollBarWidth() + 'px';
 
         this.#onTransitionEnd(this.#opt.onOpen);
 
