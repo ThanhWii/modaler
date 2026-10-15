@@ -1,4 +1,4 @@
-.modaler__backdrop {
+.modaler {
     background: rgba(0, 0, 0, 0.6);
     position: fixed;
     inset: 0;
@@ -24,7 +24,7 @@
     background: #fff;
     width: min(600px, 90%);
     border-radius: 10px;
-    padding: 20px 20px 0px;
+    padding: 20px;
     position: relative;
     transform: scale(0);
     transition: transform .3s;
@@ -55,9 +55,9 @@
     display: flex;
     justify-content: flex-end;
     gap: 8px;
-    padding: 20px 0px;
+    padding-top: 20px;
 }
 
 .modaler--no-scroll {
-    overflow: hidden;
+    overflow: hidden !important;
 }
