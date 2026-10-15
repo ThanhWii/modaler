@@ -72,6 +72,12 @@ class Modal {
         return button;
     }
 
+    #renderFooterButtons() {
+        this.#footerButtons.forEach((button) => {
+            this.#modalFooter.append(button);
+        })
+    }
+
     #build() {
         const content = this.#template.content.cloneNode(true);
         this.#backdrop = document.createElement('div');
@@ -105,9 +111,7 @@ class Modal {
             if (this.#footerContent) {
                 this.#modalFooter.innerHTML = this.#footerContent;
             }
-            this.#footerButtons.forEach((button) => {
-                this.#modalFooter.append(button);
-            })
+            this.#renderFooterButtons();
             container.append(this.#modalFooter);
         }
         this.#backdrop.append(container);
@@ -184,6 +188,9 @@ class Modal {
     addFooterButton(title, cssClass, callback) {
         const button = this.#createButtons(title, cssClass, callback);
         this.#footerButtons.push(button);
+        if (this.#modalFooter) {
+            this.#renderFooterButtons();
+        }
     }
 }
 
