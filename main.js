@@ -64,6 +64,14 @@ class Modal {
         }
     };
 
+    #createButtons(title, cssClass, callback) {
+        const button = document.createElement('button');
+        button.className = cssClass;
+        button.innerHTML = title;
+        button.onclick = callback;
+        return button;
+    }
+
     #build() {
         const content = this.#template.content.cloneNode(true);
         this.#backdrop = document.createElement('div');
@@ -77,18 +85,19 @@ class Modal {
             }
         });
 
-        const closeBtn = document.createElement('button');
-        closeBtn.className = "modal-close";
-        closeBtn.innerHTML = '&times;';
-
+        if (this.#allowButtonClose) {
+            const closeBtn = this.#createButtons('&times;', "modal-close", this.close);
+            closeBtn.onclick = () => {
+                console.log(this);
+                this.close();
+            }
+            container.append(closeBtn);
+        }
         const modalContent = document.createElement('div');
         modalContent.className = "modal-content";
 
         // Append content and elements
         modalContent.append(content);
-        if (this.#allowButtonClose) {
-            container.append(closeBtn);
-        }
         container.append(modalContent);
         if (this.#opt.footer) {
             this.#modalFooter = document.createElement('div');
@@ -104,12 +113,6 @@ class Modal {
         this.#backdrop.append(container);
         document.body.append(this.#backdrop);
         // Attach event listeners
-        if (this.#allowButtonClose) {
-            closeBtn.onclick = () => {
-                console.log(this);
-                this.close();
-            }
-        }
         if (this.#allowBackdropClose) {
             this.#backdrop.onclick = (e) => {
                 if (e.target === e.currentTarget) {
@@ -137,13 +140,7 @@ class Modal {
             this.#backdrop.classList.add('show');
         }, 0)
 
-
-        this.#onTransitionEnd(() => {
-            // Callback
-            if (typeof this.#opt.onOpen === 'function') {
-                this.#opt.onOpen();
-            }
-        });
+        this.#onTransitionEnd(this.#opt.onOpen);
 
         return this.#backdrop;
     }
@@ -185,10 +182,7 @@ class Modal {
     }
 
     addFooterButton(title, cssClass, callback) {
-        const button = document.createElement('button');
-        button.className = cssClass;
-        button.innerHTML = title;
-        button.onclick = callback;
+        const button = this.#createButtons(title, cssClass, callback);
         this.#footerButtons.push(button);
     }
 }
