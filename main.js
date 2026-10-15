@@ -53,6 +53,12 @@ class Modal {
         }
     }
 
+    #handleEscapeKey = (e) => {
+        if (e.key === 'Escape') {
+            this.close();
+        }
+    };
+
     #build() {
         const content = this.#template.content.cloneNode(true);
         this.#backdrop = document.createElement('div');
@@ -95,6 +101,7 @@ class Modal {
         // Attach event listeners
         if (this.#allowButtonClose) {
             closeBtn.onclick = () => {
+                console.log(this);
                 this.close();
             }
         }
@@ -106,11 +113,7 @@ class Modal {
             }
         }
         if (this.#allowEscapeClose) {
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    this.close();
-                }
-            });
+            document.addEventListener('keydown', this.#handleEscapeKey);
         }
 
         // Disable scrolling
@@ -154,6 +157,10 @@ class Modal {
                 this.#opt.onClose();
             }
         });
+        // Remove event listeners
+        if (this.#allowEscapeClose) {
+            document.removeEventListener('keydown', this.#handleEscapeKey);
+        }
     }
 
     destroy() {
@@ -220,7 +227,7 @@ document.querySelector('#open-modal-2').onclick = () => {
 
 const modal3 = new Modal({
     templateId: 'modal-3',
-    closeMethods: [],
+    closeMethods: ['escape'],
     footer: true,
     onOpen: () => {
         console.log('Modal 3 openned');
