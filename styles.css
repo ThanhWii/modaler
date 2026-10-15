@@ -101,6 +101,14 @@ main {
     background: #377aad;
 }
 
+.modal-btn.danger {
+    background: #ff5858;
+}
+
+.modal-btn.pull-left {
+    margin-right: auto;
+}
+
 .no-scroll {
     overflow: hidden;
 }
