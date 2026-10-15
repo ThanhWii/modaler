@@ -33,6 +33,8 @@ class Modaler {
             destroyOnClose: true,
             cssClasses: [],
             footer: false,
+            enableScrollLock: true,
+            scrollLockTarget: () => document.body,
             onOpen: () => { },
             onClose: () => { },
             ...options
@@ -49,6 +51,10 @@ class Modaler {
     static #scrollbarWidth;
 
     // Static private methods
+    static #hasScrollbar(target) {
+        return target.scrollHeight > target.clientHeight;
+    }
+
     static #getScrollBarWidth() {
         if (Modaler.#scrollbarWidth !== undefined) return Modaler.#scrollbarWidth;
         const div = document.createElement('div');
@@ -158,8 +164,16 @@ class Modaler {
             document.addEventListener('keydown', this.#handleEscapeKey);
         }
         // Disable scrolling
-        document.body.classList.add('modaler--no-scroll');
-        document.body.style.paddingRight = Modaler.#getScrollBarWidth() + 'px';
+        if (this.#opt.enableScrollLock) {
+            const target = this.#opt.scrollLockTarget();
+            console.log(target);
+            console.log(Modaler.#hasScrollbar(target));
+            if (Modaler.#hasScrollbar(target)) {
+                target.classList.add('modaler--no-scroll');
+                const targetPaddingRight = parseInt(getComputedStyle(target).paddingRight);
+                target.style.paddingRight = Modaler.#getScrollBarWidth() + targetPaddingRight + 'px';
+            }
+        }
 
         this.#onTransitionEnd(this.#opt.onOpen);
 
@@ -177,9 +191,12 @@ class Modaler {
                 this.#footerContent = null;
             }
             // Enable scrolling
-            if (Modaler.#modalElements.length === 0) {
-                document.body.classList.remove('modaler--no-scroll');
-                document.body.style.paddingRight = null;
+            if (Modaler.#modalElements.length === 0 && this.#opt.enableScrollLock) {
+                const target = this.#opt.scrollLockTarget();
+                if (Modaler.#hasScrollbar(target)) {
+                    target.classList.remove('modaler--no-scroll');
+                    target.style.paddingRight = null;
+                }
             }
             // Callback
             if (typeof this.#opt.onClose === 'function') {
