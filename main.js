@@ -3,8 +3,10 @@ class Modal {
     #allowBackdropClose;
     #allowButtonClose;
     #allowEscapeClose;
-    #backdrop;
     #template;
+    #footerContent;
+    #backdrop;
+    #modalFooter;
 
     constructor(options = {}) {
         this.#opt = {
@@ -12,6 +14,7 @@ class Modal {
             closeMethods: ['button', 'overlay', 'escape'],
             destroyOnClose: true,
             cssClasses: [],
+            footer: false,
             onOpen: () => { },
             onClose: () => { },
             ...options
@@ -72,6 +75,14 @@ class Modal {
         // Append content and elements
         modalContent.append(content);
         container.append(closeBtn, modalContent);
+        if (this.#opt.footer) {
+            this.#modalFooter = document.createElement('div');
+            this.#modalFooter.className = 'modal-footer';
+            if (this.#footerContent) {
+                this.#modalFooter.innerHTML = this.#footerContent;
+            }
+            container.append(this.#modalFooter);
+        }
         this.#backdrop.append(container);
         document.body.append(this.#backdrop);
         // Attach event listeners
@@ -126,6 +137,7 @@ class Modal {
             if (this.#backdrop && destroy) {
                 this.#backdrop.remove();
                 this.#backdrop = null;
+                this.#footerContent = null;
             }
             // Enable scrolling
             document.body.classList.remove('no-scroll');
@@ -139,6 +151,13 @@ class Modal {
 
     destroy() {
         this.close(true);
+    }
+
+    setFooterContent(html) {
+        this.#footerContent = html;
+        if (this.#modalFooter) {
+            this.#modalFooter.innerHTML = html;
+        }
     }
 }
 
@@ -183,3 +202,20 @@ document.querySelector('#open-modal-2').onclick = () => {
         }
     }
 }
+
+const modal3 = new Modal({
+    templateId: 'modal-3',
+    footer: true,
+    onOpen: () => {
+        console.log('Modal 3 openned');
+    },
+    onClose: () => {
+        console.log('Modal 3 closed');
+    }
+});
+document.querySelector('#open-modal-3').onclick = () => {
+    modal3.open();
+}
+modal3.setFooterContent('<h2>Footer Content Modal 3</h2>');
+modal3.open();
+
