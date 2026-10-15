@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "minify": "terser modaler.js -o src/modaler.min.js && csso modaler.css -o src/modaler.min.css"
+  },
+  "dependencies": {
+    "csso-cli": "^4.0.2",
+    "terser": "^5.51.2"
+  }
+}
