@@ -12,6 +12,8 @@ class Modal {
             closeMethods: ['button', 'overlay', 'escape'],
             destroyOnClose: true,
             cssClasses: [],
+            onOpen: () => { },
+            onClose: () => { },
             ...options
         }
         this.#template = document.querySelector(`#${this.#opt.templateId}`);
@@ -40,6 +42,13 @@ class Modal {
     }
 
     // Private methods
+    #onTransitionEnd(callback) {
+        this.#backdrop.ontransitionend = (e) => {
+            if (e.propertyName !== 'transform') return;
+            if (typeof callback === 'function') callback();
+        }
+    }
+
     #build() {
         const content = this.#template.content.cloneNode(true);
         this.#backdrop = document.createElement('div');
@@ -100,20 +109,32 @@ class Modal {
             this.#backdrop.classList.add('show');
         }, 0)
 
+
+        this.#onTransitionEnd(() => {
+            // Callback
+            if (typeof this.#opt.onOpen === 'function') {
+                this.#opt.onOpen();
+            }
+        });
+
         return this.#backdrop;
     }
 
     close(destroy = this.#opt.destroyOnClose) {
         this.#backdrop.classList.remove("show");
-        this.#backdrop.ontransitionend = (e) => {
-            if (e.propertyName === 'transform' && destroy) {
+        this.#onTransitionEnd(() => {
+            if (this.#backdrop && destroy) {
                 this.#backdrop.remove();
                 this.#backdrop = null;
             }
-        }
-        // Enable scrolling
-        document.body.classList.remove('no-scroll');
-        document.body.style.paddingRight = '';
+            // Enable scrolling
+            document.body.classList.remove('no-scroll');
+            document.body.style.paddingRight = '';
+            // Callback
+            if (typeof this.#opt.onClose === 'function') {
+                this.#opt.onClose();
+            }
+        });
     }
 
     destroy() {
@@ -127,12 +148,12 @@ const modal1 = new Modal({
     destroyOnClose: false,
     cssClasses: ['class-1', 'class-2'],
     // footer: true,
-    // onOpen: () => {
-    //     console.log('Modal opened');
-    // },
-    // onClose: () => {
-    //     console.log('Modal closed');
-    // }
+    onOpen: () => {
+        console.log('Modal 1 openned');
+    },
+    onClose: () => {
+        console.log('Modal 1 closed');
+    }
 });
 document.querySelector('#open-modal-1').onclick = () => {
     modal1.open();
@@ -141,6 +162,12 @@ document.querySelector('#open-modal-1').onclick = () => {
 const modal2 = new Modal({
     templateId: 'modal-2',
     closeMethods: ['button', 'escape'],
+    onOpen: () => {
+        console.log('Modal 2 openned');
+    },
+    onClose: () => {
+        console.log('Modal 2 closed');
+    }
 });
 document.querySelector('#open-modal-2').onclick = () => {
     const modalElement = modal2.open();
