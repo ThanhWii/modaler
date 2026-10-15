@@ -88,10 +88,10 @@ class Modal {
     #build() {
         const content = this.#template.content.cloneNode(true);
         this.#backdrop = document.createElement('div');
-        this.#backdrop.className = "modal-backdrop";
+        this.#backdrop.className = "modaler__backdrop";
 
         const container = document.createElement('div');
-        container.className = "modal-container";
+        container.className = "modaler__container";
         this.#opt.cssClasses.forEach((cssClass) => {
             if (typeof cssClass === 'string') {
                 container.classList.add(cssClass);
@@ -99,18 +99,18 @@ class Modal {
         });
 
         if (this.#allowButtonClose) {
-            const closeBtn = this.#createButtons('&times;', "modal-close", () => this.close());
+            const closeBtn = this.#createButtons('&times;', "modaler__close", () => this.close());
             container.append(closeBtn);
         }
         const modalContent = document.createElement('div');
-        modalContent.className = "modal-content";
+        modalContent.className = "modaler__content";
 
         // Append content and elements
         modalContent.append(content);
         container.append(modalContent);
         if (this.#opt.footer) {
             this.#modalFooter = document.createElement('div');
-            this.#modalFooter.className = 'modal-footer';
+            this.#modalFooter.className = 'modaler__footer';
             this.#renderFooterContent();
             this.#renderFooterButtons();
             container.append(this.#modalFooter);
@@ -135,13 +135,13 @@ class Modal {
             this.#build();
         }
         setTimeout(() => {
-            this.#backdrop.classList.add('show');
+            this.#backdrop.classList.add('modaler--show');
         }, 0)
         if (this.#allowEscapeClose) {
             document.addEventListener('keydown', this.#handleEscapeKey);
         }
         // Disable scrolling
-        document.body.classList.add('no-scroll');
+        document.body.classList.add('modaler--no-scroll');
         document.body.style.paddingRight = Modal.#getScrollBarWidth() + 'px';
 
         this.#onTransitionEnd(this.#opt.onOpen);
@@ -151,16 +151,17 @@ class Modal {
 
     close(destroy = this.#opt.destroyOnClose) {
         Modal.#modalElements.pop();
-        this.#backdrop.classList.remove("show");
+        this.#backdrop.classList.remove("modaler--show");
         this.#onTransitionEnd(() => {
             if (this.#backdrop && destroy) {
                 this.#backdrop.remove();
                 this.#backdrop = null;
+                this.#modalFooter = null;
                 this.#footerContent = null;
             }
             // Enable scrolling
             if (Modal.#modalElements.length === 0) {
-                document.body.classList.remove('no-scroll');
+                document.body.classList.remove('modaler--no-scroll');
                 document.body.style.paddingRight = null;
             }
             // Callback
@@ -249,18 +250,15 @@ document.querySelector('#open-modal-3').onclick = () => {
     modal3.open();
 }
 modal3.setFooterContent('<h2>Footer Content Modal 3</h2>');
-modal3.addFooterButton('<span>Danger</span>', 'modal-btn danger pull-left', (e) => {
-    console.log(e);
+modal3.addFooterButton('<span>Danger</span>', 'modaler__btn modaler__btn--danger modaler__btn--pull-left', () => {
     console.log('Danger clicked');
     modal3.close();
 });
-modal3.addFooterButton('Cancel', 'modal-btn', (e) => {
-    console.log(e);
+modal3.addFooterButton('Cancel', 'modaler__btn', () => {
     console.log('Cancel clicked');
     modal3.close();
 });
-modal3.addFooterButton('<span>Agree</span>', 'modal-btn primary', (e) => {
-    console.log(e);
+modal3.addFooterButton('<span>Agree</span>', 'modaler__btn modaler__btn--primary', () => {
     console.log('Agree clicked');
     modal3.close();
 });

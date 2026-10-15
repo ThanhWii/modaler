@@ -31,7 +31,7 @@ main {
     font-weight: 600;
 }
 
-.modal-backdrop {
+.modaler__backdrop {
     background: rgba(0, 0, 0, 0.6);
     position: fixed;
     inset: 0;
@@ -44,16 +44,16 @@ main {
     transition-duration: .3s;
 }
 
-.modal-backdrop.show {
+.modaler--show {
     opacity: 1;
     visibility: visible;
 }
 
-.modal-backdrop.show .modal-container {
+.modaler--show .modaler__container {
     transform: scale(1);
 }
 
-.modal-container {
+.modaler__container {
     background: #fff;
     width: min(600px, 90%);
     border-radius: 10px;
@@ -63,7 +63,7 @@ main {
     transition: transform .3s;
 }
 
-.modal-close {
+.modaler__close {
     position: absolute;
     top: 6px;
     right: 6px;
@@ -75,40 +75,40 @@ main {
     font-size: 2rem;
 }
 
-.modal-close:hover {
+.modaler__close:hover {
     color: #333;
 }
 
-.modal-content {
+.modaler__content {
     max-height: 80vh;
     overflow-y: auto;
 }
 
-.modal-footer {
+.modaler__footer {
     display: flex;
     justify-content: flex-end;
     gap: 8px;
     padding: 20px 0px;
 }
 
-.modal-btn {
+.modaler__btn {
     color: #fff;
     background: #464e63;
     padding: 8px 20px;
 }
 
-.modal-btn.primary {
+.modaler__btn--primary {
     background: #377aad;
 }
 
-.modal-btn.danger {
+.modaler__btn--danger {
     background: #ff5858;
 }
 
-.modal-btn.pull-left {
+.modaler__btn--pull-left {
     margin-right: auto;
 }
 
-.no-scroll {
+.modaler--no-scroll {
     overflow: hidden;
 }
