@@ -5,6 +5,7 @@ class Modal {
     #allowEscapeClose;
     #template;
     #footerContent;
+    #footerButtons = [];
     #backdrop;
     #modalFooter;
 
@@ -74,13 +75,19 @@ class Modal {
 
         // Append content and elements
         modalContent.append(content);
-        container.append(closeBtn, modalContent);
+        if (this.#allowButtonClose) {
+            container.append(closeBtn);
+        }
+        container.append(modalContent);
         if (this.#opt.footer) {
             this.#modalFooter = document.createElement('div');
             this.#modalFooter.className = 'modal-footer';
             if (this.#footerContent) {
                 this.#modalFooter.innerHTML = this.#footerContent;
             }
+            this.#footerButtons.forEach((button) => {
+                this.#modalFooter.append(button);
+            })
             container.append(this.#modalFooter);
         }
         this.#backdrop.append(container);
@@ -159,6 +166,14 @@ class Modal {
             this.#modalFooter.innerHTML = html;
         }
     }
+
+    addFooterButton(title, cssClass, callback) {
+        const button = document.createElement('button');
+        button.className = cssClass;
+        button.innerHTML = title;
+        button.onclick = callback;
+        this.#footerButtons.push(button);
+    }
 }
 
 // TEST
@@ -205,6 +220,7 @@ document.querySelector('#open-modal-2').onclick = () => {
 
 const modal3 = new Modal({
     templateId: 'modal-3',
+    closeMethods: [],
     footer: true,
     onOpen: () => {
         console.log('Modal 3 openned');
@@ -216,6 +232,19 @@ const modal3 = new Modal({
 document.querySelector('#open-modal-3').onclick = () => {
     modal3.open();
 }
-modal3.setFooterContent('<h2>Footer Content Modal 3</h2>');
-modal3.open();
-
+// modal3.setFooterContent('<h2>Footer Content Modal 3</h2>');
+modal3.addFooterButton('<span>Danger</span>', 'modal-btn danger pull-left', (e) => {
+    console.log(e);
+    console.log('Danger clicked');
+    modal3.close();
+});
+modal3.addFooterButton('Cancel', 'modal-btn', (e) => {
+    console.log(e);
+    console.log('Cancel clicked');
+    modal3.close();
+});
+modal3.addFooterButton('<span>Agree</span>', 'modal-btn primary', (e) => {
+    console.log(e);
+    console.log('Agree clicked');
+    modal3.close();
+});
