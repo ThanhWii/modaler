@@ -46,6 +46,7 @@ class Modal {
 
         // Disable scrolling
         document.body.classList.add('no-scroll');
+        document.body.style.paddingRight = this._getScrollBarWidth() + 'px';
 
         return backdrop;
     }
@@ -59,6 +60,20 @@ class Modal {
         }
         // Enable scrolling
         document.body.classList.remove('no-scroll');
+        document.body.style.paddingRight = '';
+    }
+
+    _getScrollBarWidth() {
+        const div = document.createElement('div');
+        Object.assign(div.style, {
+            overflow: 'scroll',
+            position: 'absolute',
+            top: '-999px',
+        });
+        document.body.appendChild(div);
+        const scrollbarWidth = div.offsetWidth - div.clientWidth;
+        document.body.removeChild(div);
+        return scrollbarWidth;
     }
 }
 
