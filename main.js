@@ -53,6 +53,7 @@ class Modal {
     #onTransitionEnd(callback) {
         this.#backdrop.ontransitionend = (e) => {
             if (e.propertyName !== 'transform') return;
+            this.#backdrop.ontransitionend = null;
             if (typeof callback === 'function') callback();
         }
     }
