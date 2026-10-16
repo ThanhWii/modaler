@@ -200,14 +200,14 @@
             footer: true
         });
         buttonsModal.addFooterButton('Delete', 'modal-btn danger pull-left', () => {
-            alert('Ban vua bam nut Delete!');
+            alert('Delete Clicked!');
             buttonsModal.close();
         });
         buttonsModal.addFooterButton('Cancel', 'modal-btn', () => {
             buttonsModal.close();
         });
         buttonsModal.addFooterButton('Confirm', 'modal-btn primary', () => {
-            alert('Confirmed thanh cong!');
+            alert('Confirm Clicked!');
             buttonsModal.close();
         });
         document.querySelector('#btn-buttons').onclick = () => buttonsModal.open();
