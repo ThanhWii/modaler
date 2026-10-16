@@ -167,7 +167,7 @@ class Modaler {
             document.addEventListener('keydown', this.#handleEscapeKey);
         }
         // Disable scrolling
-        if (this.#opt.enableScrollLock) {
+        if (Modaler.#modalElements.length === 1 && this.#opt.enableScrollLock) {
             const target = this.#opt.scrollLockTarget();
             if (Modaler.#hasScrollbar(target)) {
                 target.classList.add('modaler--no-scroll');
@@ -196,7 +196,7 @@ class Modaler {
                 const target = this.#opt.scrollLockTarget();
                 if (Modaler.#hasScrollbar(target)) {
                     target.classList.remove('modaler--no-scroll');
-                    target.style.paddingRight = null;
+                    target.style.paddingRight = '';
                 }
             }
             // Callback
